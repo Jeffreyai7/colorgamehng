@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    color: #19084e;
+  }
+
+  body {
+    margin: 0;
+    background-color: #f9f9f9;
+  }
+  
+  button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .titleBox{
+    text-align: center;
+  }
+
+
+  .infoBox{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+    }
+
+    .colorBoxContainer{
+      width: 18.75rem;
+      height: 18.75rem;
+      margin: 0 auto;
+      background-color: green;
+      display: flex;
+      justify-content: center;
+    }
+  
+    .colorBox{
+      width: 100%;
+    }
+
+    .guessBoxInfo{
+      width: 80%;
+      margin: 0.5em auto;
+      text-align: center;
+    }
+
+    .guessBoxInfo p{
+        margin: 0;
+    }
+
+    .guessBoxInfo span{
+        font-size: small;
+        margin: 0;
+    }
+
+    .colorOptions{
+        width: 80%;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        place-content: center;
+        gap: 0.5rem;
+    }
+
+    .colorOption{
+        width: 6rem;
+        height: 6rem;
+        cursor: pointer;
+    }
+
+    .gameInstructions{
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .gameInstructions h2{
+        text-align: center;
+    }
+
+    @media screen and (min-width: 768px){
+        
+        main {
+            display: flex;
+            gap: 1rem;
+            width: 95%;
+            margin: 0 auto;
+            padding: 1rem;
+            }
+        
+        .colorBoxContainer{
+            width: 12rem;
+            height: 12rem;
+            margin: 0 auto;
+            background-color: green;
+            display: flex;
+            justify-content: center;
+          }
+
+        .infoBox{
+            position: sticky;
+            top: 2%;
+            width: 60%;
+            max-width: 25rem;
+        }
+        .colorOptions{
+            width: 100%;
+            max-width: 30rem;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-content: center;
+            gap: 0.5rem;
+        }
+
+        .colorOption{
+            width: 8rem;
+            height: 8rem;
+            cursor: pointer;
+        }
+
+        .gameInstructions{
+            width: 40%;
+            max-width: 50rem;
+            margin: 0 auto;
+        }
+        
+        .gameInstructions div{
+            display: grid;
+            place-content: center;
+            height: 25rem;
+        }
+    }
