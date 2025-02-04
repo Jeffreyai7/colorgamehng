@@ -1,208 +1,102 @@
-let timer = document.getElementsByClassName("timer")[0];
-let quizContainer = document.getElementById("container");
-let nextButton = document.getElementById("next-button");
-let numOfQuestions = document.getElementsByClassName("number-of-questions")[0];
-let displayContainer = document.getElementById("display-container");
-let scoreContainer = document.querySelector(".score-container");
-let restart = document.getElementById("restart");
-let userScore = document.getElementById("user-score");
-let startScreen = document.querySelector(".start-screen");
-let startButton = document.getElementById("start-button");
-let questionCount;
-let scoreCount = 0;
-let count = 10;
-let countdown;
-//For hex codes
-let letters = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
+// Here is the array of colors 
+const colors = [
+  "#CC8033", "#B3CC33", "#6633CC", "#3380CC", "#CC334D", "#B333CC",
+  "#CC33CC", "#CCB333", "#4D33CC", "#CCCC33", "#99CC33", "#CC3380",
+  "#3366CC", "#CC9933", "#33B3CC", "#33CC4D", "#CC3399", "#80CC33",
+  "#33CC99", "#33CC66", "#CC3366", "#3333CC", "#33CCB3", "#3399CC",
+  "#CC6633", "#33CCCC", "#CC4C33", "#8033CC", "#66CC33", "#33CC33",
+  "#CC3333", "#4DCC33", "#33CC80", "#CC33B3", "#334DCC", "#9933CC"
+];
 
-//Questions and Options Array
-let quizArray = [];
+let targetColor = "";
+let score = 0;
+let successMessage = "Correct, you got that right, 🎉 Play Again "
+let failureMessage = "⚠️ Oops! Please try again. 😞"
 
-const generateRandomValue = (array) =>
-  array[Math.floor(Math.random() * array.length)];
+// Document Object Model references
+const targetColorBox = document.getElementById("colorBox");
+const messageDisplay = document.getElementById("gameStatus");
+const scoreDisplay = document.getElementById("score");
+const newGameBtn = document.getElementById("newGameButton");
+const colorButtons = document.querySelectorAll(".colorOption");
 
-//Generate Hex Codes
-const colorGenerator = () => {
-  newColor = "#";
-  for (let i = 0; i < 6; i++) {
-    newColor += generateRandomValue(letters);
+// Here is  a utility function to shuffle an array (Fisher-Yates shuffle)
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-  return newColor;
-};
+  const transformedTosix = array.slice(0, 6) // picking out 5 from the 36color codes
+  return transformedTosix;
+}
 
-//Create Options
-const populateOptions = (optionsArray) => {
-  let expectedLength = 4;
-  while (optionsArray.length < expectedLength) {
-    let color = colorGenerator();
-    if (!optionsArray.includes(color)) {
-      optionsArray.push(color);
-    }
-  }
-  return optionsArray;
-};
 
-//Create quiz Objecy
-const populateQuiz = () => {
-  for (let i = 0; i < 5; i++) {
-    let currentColor = colorGenerator();
-    let allColors = [];
-    allColors.push(currentColor);
-    allColors = populateOptions(allColors);
-    quizArray.push({
-      id: i,
-      correct: currentColor,
-      options: allColors,
-    });
-  }
-};
 
-//Next button
-nextButton.addEventListener(
-  "click",
-  (displayNext = () => {
-    //increment questionCOunt
-    questionCount += 1;
-    //If last question
-    if (questionCount == quizArray.length) {
-      //hide question container and display score
-      displayContainer.classList.add("hide");
-      scoreContainer.classList.remove("hide");
+function setupGame() {
+  // Reset message
+  messageDisplay.textContent = "Choose the matching color!";
+  
+  // Randomly choose the target color from the predefined set
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  targetColor = randomColor;
+  targetColorBox.style.backgroundColor = randomColor;
+  const slicedArr = colors.slice()
+  // Shuffle the colors for the buttons so their order changes each round
+  const shuffledColors = shuffle(slicedArr);
+  const shuffledWithTargetcolor = shuffle([randomColor, ...shuffledColors]) 
+  
+  // Assign each button a background color from the shuffled list and store that value
+  colorButtons.forEach((button, index) => {
+    const color = shuffledWithTargetcolor[index];
+    button.style.backgroundColor = color;
+    button.dataset.color = color;
+  });
+}
 
-      //User score
-      userScore.innerHTML =
-        "Your score is " + scoreCount + " out of " + questionCount;
+
+function onTextChange(textElement, content) {
+  // First fade out
+  textElement.classList.add("fade-out");
+
+  setTimeout(() => {
+    // Change the text content when opacity is 0
+    textElement.textContent = content;
+
+    // Fade in the text
+    textElement.classList.remove("fade-out");
+    textElement.classList.add("fade-in");
+
+    // Remove the fade-in class after animation
+    setTimeout(() => {
+      textElement.classList.remove("fade-in");
+    }, 500);
+  }, 500);
+}
+
+// Add event listeners to the color buttons
+colorButtons.forEach(button => {
+  button.addEventListener("click", function() {
+    
+    const guessedColor = this.dataset.color;
+    if (guessedColor === targetColor) {
+      onTextChange(messageDisplay, successMessage)
+      score++;
+      scoreDisplay.textContent = score;
+      setupGame()
     } else {
-      //displau questionCount
-      numOfQuestions.innerHTML =
-        questionCount + 1 + " of " + quizArray.length + " Question";
-
-      //display quiz
-      quizDisplay(questionCount);
-      //count=11(so it start with 10)
-      count = 10;
-      //clearInterval for next question
-      clearInterval(countdown);
-      //display timer
-      timerDisplay();
+      onTextChange(messageDisplay, failureMessage)
+      setupGame()
     }
-    nextButton.classList.add("hide");
-  })
-);
-
-//Timer
-const timerDisplay = () => {
-  countdown = setInterval(() => {
-    timer.innerHTML = `<span>Time Left: </span> ${count}s`;
-    count--;
-    if (count == 0) {
-      clearInterval(countdown);
-      displayNext();
-    }
-  }, 1000);
-};
-
-//Display Quiz
-const quizDisplay = (questionCount) => {
-  let quizCards = document.querySelectorAll(".container-mid");
-  //hide other cards
-  quizCards.forEach((card) => {
-    card.classList.add("hide");
   });
-
-  //display current question card
-  quizCards[questionCount].classList.remove("hide");
-};
-
-//Quiz Creation
-function quizCreator() {
-  //randomly sort questions
-  quizArray.sort(() => Math.random() - 0.5);
-
-  //Generate quiz
-  for (let i of quizArray) {
-    //Randomly sort options
-    i.options.sort(() => Math.random() - 0.5);
-
-    //Quiz card creation
-    let div = document.createElement("div");
-    div.classList.add("container-mid", "hide");
-
-    //Question number
-    numOfQuestions.innerHTML = 1 + " of " + quizArray.length + " Question";
-
-    //question
-    let questionDiv = document.createElement("p");
-    questionDiv.classList.add("question");
-    questionDiv.innerHTML = `<div class="question-color">${i.correct}</div>`;
-    div.appendChild(questionDiv);
-    //Options
-    div.innerHTML += `
-    <div class="button-container">
-    <button class="option-div" onclick="checker(this)" style="background-color: ${i.options[0]}" data-option="${i.options[0]}"></button>
-    <button class="option-div" onclick="checker(this)" style="background-color: ${i.options[1]}" data-option="${i.options[1]}"></button>
-    <button class="option-div" onclick="checker(this)" style="background-color: ${i.options[2]}" data-option="${i.options[2]}"></button>
-    <button class="option-div" onclick="checker(this)" style="background-color: ${i.options[3]}" data-option="${i.options[3]}"></button>
-    </div>
-    `;
-    quizContainer.appendChild(div);
-  }
-}
-
-function checker(userOption) {
-  let userSolution = userOption.getAttribute("data-option");
-  let question =
-    document.getElementsByClassName("container-mid")[questionCount];
-  let options = question.querySelectorAll(".option-div");
-  //If users clicked answer === correct
-  if (userSolution === quizArray[questionCount].correct) {
-    userOption.classList.add("correct");
-    scoreCount++;
-  } else {
-    userOption.classList.add("incorrect");
-    options.forEach((element) => {
-      if (
-        element.getAttribute("data-option") == quizArray[questionCount].correct
-      ) {
-        element.classList.add("correct");
-      }
-    });
-  }
-  //clear interval
-  clearInterval(countdown);
-  //disable all options
-  options.forEach((element) => {
-    element.disabled = true;
-  });
-  nextButton.classList.remove("hide");
-}
-
-function initial() {
-  nextButton.classList.add("hide");
-  quizContainer.innerHTML = "";
-  questionCount = 0;
-  scoreCount = 0;
-  clearInterval(countdown);
-  count = 10;
-  timerDisplay();
-  quizCreator();
-  quizDisplay(questionCount);
-}
-
-//Restart game
-restart.addEventListener("click", () => {
-  quizArray = [];
-  populateQuiz();
-  initial();
-  displayContainer.classList.remove("hide");
-  scoreContainer.classList.add("hide");
+  
 });
 
-//When user clicks on start button
-startButton.addEventListener("click", () => {
-  startScreen.classList.add("hide");
-  displayContainer.classList.remove("hide");
-  quizArray = [];
-  populateQuiz();
-  initial();
+// New Game button resets the round (target color and messages)
+newGameBtn.addEventListener("click", function() {
+  setupGame();
+  score = 0;
+  scoreDisplay.textContent = score;
 });
+
+// On Page reload
+setupGame();

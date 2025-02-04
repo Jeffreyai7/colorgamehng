@@ -2,26 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles.css">
     <title>Color Guessing Game</title>
 </head>
 <body>
-    <div class="titleBox">
+    <div class="titleBox1">
         <h1>Color Game</h1>
-        <span>Can you guess the correct color?</span>
     </div>
     <main>
         <div>
-            <div class="infoBox"><p><span>Score</span> <span class="score"></span></p> <button data-testid="newGameButton" type="button">New Game</button></div>
-            <p data-testid="gameStatus" class="gameStatus"></p>
+            <div class="infoBox"><p><span>Score:</span> <span class="score" id="score"></span></p> <button data-testid="newGameButton" id="newGameButton" class="newGameButton" type="button">New Game</button></div>
             <div class="colorBoxContainer">
-                <div data-testid="colorBox" class="colorBox">
+                <div data-testid="colorBox" class="colorBox" id="colorBox">
                 </div>
             </div>
             <div class="guessBoxInfo">
-                <p>Make your Guess</p>
-                <span>Tap on a color to make your guess</span>
+            <p data-testid="gameStatus" class="gameStatus" id="gameStatus"></p>
+            <span data-testid="gameInstructions">Tap on a color to make your guess</span>
             </div>
             <div class="colorOptions">
                 <button title="button" type="button"data-testid="colorOption" class="colorOption"></button>
@@ -32,16 +30,22 @@
                 <button title="button" type="button"data-testid="colorOption" class="colorOption"></button> 
             </div>
         </div>
-        <div data-testid="gameInstructions" class="gameInstructions">
+        <div class="gameInstructions">
             <div>
+                <div class="titleBox2">
+                    <h1>Color Game</h1>
+                </div>
                 <h2>Instructions</h2>
+                <div data-testid="gameInstructions">
                 <p>1. A color will be displayed at the top of the screen.</p>
                 <p>2. You have to guess the correct color from the options below.</p>
                 <p>3. If you guess the correct color, you will get a point.</p>
                 <p>4. If you guess the wrong color, you will not be awarded any point.</p>
                 <p>5. You can start a new game at any time.</p>
+                </div>
             </div>
         </div>    
     </main>
+    <script src="/index.js"></script>
 </body>
 </html>

@@ -15,10 +15,23 @@
     border: none;
     outline: none;
     cursor: pointer;
+    border-radius: 10%;
   }
 
-  .titleBox{
+  .titleBox1{
+    /* display: none; */
     text-align: center;
+    background-color: #f9f9f9;
+    border: 2px solid black;
+    position: sticky;
+    top: 0;
+  }
+
+  .titleBox2{
+    display: none;
+    text-align: center;
+    background-color: #f9f9f9;
+    border: 2px solid black;
   }
 
 
@@ -27,7 +40,12 @@
     justify-content: space-between;
     align-items: center;
     width: 80%;
+    position: sticky;
+    top: 10%;
     margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 0 5px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 
     .colorBoxContainer{
@@ -37,10 +55,13 @@
       background-color: green;
       display: flex;
       justify-content: center;
+      border-radius: 10%;
     }
   
     .colorBox{
       width: 100%;
+      border-radius: 10%;
+
     }
 
     .guessBoxInfo{
@@ -56,6 +77,24 @@
     .guessBoxInfo span{
         font-size: small;
         margin: 0;
+    }
+
+
+    .newGameButton:hover{
+      color: red;
+    }
+
+    .gameStatus{
+      text-align: center;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .fade-out {
+      opacity: 0;
+    }
+
+    .fade-in {
+      opacity: 1;
     }
 
     .colorOptions{
@@ -75,7 +114,7 @@
 
     .gameInstructions{
         width: 80%;
-        margin: 0 auto;
+        margin: 1em auto;
     }
 
     .gameInstructions h2{
@@ -91,6 +130,23 @@
             margin: 0 auto;
             padding: 1rem;
             }
+
+            .titleBox1{
+              display: none;
+              text-align: center;
+              background-color: #f9f9f9;
+              border: 2px solid black;
+              position: sticky;
+              top: 0;
+            }
+          
+            .titleBox2{
+              display: block;
+              text-align: center;
+              background-color: #f9f9f9;
+              border: 2px solid black;
+            }
+          
         
         .colorBoxContainer{
             width: 12rem;
@@ -103,9 +159,10 @@
 
         .infoBox{
             position: sticky;
-            top: 2%;
+            top: 0;
             width: 60%;
             max-width: 25rem;
+            margin-top: 0;  
         }
         .colorOptions{
             width: 100%;
@@ -123,15 +180,19 @@
             cursor: pointer;
         }
 
+        
         .gameInstructions{
             width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             max-width: 50rem;
             margin: 0 auto;
         }
         
-        .gameInstructions div{
+        /* .gameInstructions div{
             display: grid;
             place-content: center;
             height: 25rem;
-        }
+        } */
     }
