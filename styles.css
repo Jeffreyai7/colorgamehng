@@ -110,7 +110,13 @@
         width: 6rem;
         height: 6rem;
         cursor: pointer;
+        transition: transform 0.2s ease-in-out;
     }
+
+    .colorOption:hover{
+        transform: scale(1.05);
+    }
+
 
     .gameInstructions{
         width: 80%;

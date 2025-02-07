@@ -40,10 +40,10 @@ function setupGame() {
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
   targetColor = randomColor;
   targetColorBox.style.backgroundColor = randomColor;
-  const slicedArr = colors.slice()
   // Shuffle the colors for the buttons so their order changes each round
-  const shuffledColors = shuffle(slicedArr);
-  const shuffledWithTargetcolor = shuffle([randomColor, ...shuffledColors]) 
+  
+  const shuffledColors = shuffle([...colors]);
+  const shuffledWithTargetcolor = shuffle([randomColor, ...shuffledColors.slice(0, 5)]) 
   
   // Assign each button a background color from the shuffled list and store that value
   colorButtons.forEach((button, index) => {
